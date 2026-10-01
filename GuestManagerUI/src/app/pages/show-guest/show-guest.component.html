@@ -40,7 +40,7 @@
               <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let guest" class="col-name">
                 <div class="name-cell">
-                  <span class="name-text">{{ guest.name }}</span>
+                  <a class="name-link" [routerLink]="['/view-guest', guest.id]">{{ guest.name }}</a>
                   @if (guest.nickname) {
                     <span class="nickname-text">{{ guest.nickname }}</span>
                   }
@@ -50,15 +50,7 @@
 
             <ng-container matColumnDef="relationship">
               <th mat-header-cell *matHeaderCellDef>Relație</th>
-              <td
-                mat-cell
-                *matCellDef="let guest"
-                class="clamp-cell"
-                [matTooltip]="guest.relationship || ''"
-                matTooltipPosition="above"
-                [matTooltipDisabled]="!guest.relationship"
-                [matTooltipShowDelay]="0"
-              >
+              <td mat-cell *matCellDef="let guest" class="wrap-cell">
                 @if (guest.relationship) {
                   {{ guest.relationship }}
                 } @else {
@@ -69,15 +61,7 @@
 
             <ng-container matColumnDef="speakingStyle">
               <th mat-header-cell *matHeaderCellDef>Cum vorbim</th>
-              <td
-                mat-cell
-                *matCellDef="let guest"
-                class="clamp-cell"
-                [matTooltip]="guest.speakingStyle || ''"
-                matTooltipPosition="above"
-                [matTooltipDisabled]="!guest.speakingStyle"
-                [matTooltipShowDelay]="0"
-              >
+              <td mat-cell *matCellDef="let guest" class="wrap-cell">
                 @if (guest.speakingStyle) {
                   {{ guest.speakingStyle }}
                 } @else {
@@ -87,24 +71,14 @@
             </ng-container>
 
             <ng-container matColumnDef="memories">
-              <th mat-header-cell *matHeaderCellDef>Memories</th>
-              <td
-                mat-cell
-                *matCellDef="let guest"
-                [matTooltip]="listTooltip(guest.memories)"
-                matTooltipPosition="above"
-                [matTooltipDisabled]="!guest.memories.length"
-                [matTooltipShowDelay]="0"
-              >
+              <th mat-header-cell *matHeaderCellDef>Amintiri</th>
+              <td mat-cell *matCellDef="let guest">
                 @if (guest.memories.length > 0) {
-                  <mat-chip-set>
-                    @for (memory of previewList(guest.memories); track memory) {
-                      <mat-chip>{{ memory }}</mat-chip>
+                  <ol class="detail-list">
+                    @for (memory of guest.memories; track $index) {
+                      <li>{{ memory }}</li>
                     }
-                    @if (extraCount(guest.memories); as extra) {
-                      <mat-chip>{{ '+' + extra }}</mat-chip>
-                    }
-                  </mat-chip-set>
+                  </ol>
                 } @else {
                   <span class="muted">—</span>
                 }
@@ -112,22 +86,12 @@
             </ng-container>
 
             <ng-container matColumnDef="personality">
-              <th mat-header-cell *matHeaderCellDef>Personality</th>
-              <td
-                mat-cell
-                *matCellDef="let guest"
-                [matTooltip]="listTooltip(guest.personality)"
-                matTooltipPosition="above"
-                [matTooltipDisabled]="!guest.personality.length"
-                [matTooltipShowDelay]="0"
-              >
+              <th mat-header-cell *matHeaderCellDef>Personalitate</th>
+              <td mat-cell *matCellDef="let guest">
                 @if (guest.personality.length > 0) {
                   <mat-chip-set>
-                    @for (trait of previewList(guest.personality); track trait) {
+                    @for (trait of guest.personality; track $index) {
                       <mat-chip>{{ trait }}</mat-chip>
-                    }
-                    @if (extraCount(guest.personality); as extra) {
-                      <mat-chip>{{ '+' + extra }}</mat-chip>
                     }
                   </mat-chip-set>
                 } @else {

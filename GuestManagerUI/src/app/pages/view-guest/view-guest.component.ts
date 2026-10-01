@@ -3,7 +3,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { GuestService } from '../../services/guest.service';
 import { Guest } from '../../models/guest.model';
@@ -15,7 +17,9 @@ import { Guest } from '../../models/guest.model';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatChipsModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
   ],
   templateUrl: './view-guest.component.html',
   styleUrl: './view-guest.component.css',
@@ -24,8 +28,7 @@ export class ViewGuestComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly guestService = inject(GuestService);
 
-  guestJson = '';
-  guestName = '';
+  guest: Guest | null = null;
   loading = false;
   errorMessage = '';
 
@@ -39,8 +42,7 @@ export class ViewGuestComponent implements OnInit {
     this.loading = true;
     this.guestService.getById(id).subscribe({
       next: (guest: Guest) => {
-        this.guestName = guest.name;
-        this.guestJson = JSON.stringify(guest, null, 2);
+        this.guest = guest;
         this.loading = false;
       },
       error: (error) => {

@@ -1,18 +1,20 @@
 <div class="page">
   <mat-card appearance="outlined">
     <mat-card-header>
-      <mat-card-title>View Guest</mat-card-title>
+      <mat-card-title>{{ guest?.name || 'Detalii invitat' }}</mat-card-title>
       <mat-card-subtitle>
-        @if (guestName) {
-          JSON details for {{ guestName }}.
-        } @else {
-          Guest details as JSON.
-        }
+        {{ guest?.nickname || 'Toate informațiile salvate despre invitat.' }}
       </mat-card-subtitle>
       <span class="header-spacer"></span>
+      @if (guest?.id; as guestId) {
+        <a mat-stroked-button [routerLink]="['/edit-guest', guestId]">
+          <mat-icon>edit</mat-icon>
+          Editează
+        </a>
+      }
       <a mat-button routerLink="/guests">
         <mat-icon>arrow_back</mat-icon>
-        Back to guests
+        Înapoi
       </a>
     </mat-card-header>
 
@@ -26,8 +28,76 @@
           <mat-icon>error_outline</mat-icon>
           <span>{{ errorMessage }}</span>
         </div>
-      } @else {
-        <pre class="json">{{ guestJson }}</pre>
+      } @else if (guest) {
+        <dl class="details">
+          <div class="detail">
+            <dt>Nume</dt>
+            <dd>{{ guest.name }}</dd>
+          </div>
+
+          <div class="detail">
+            <dt>Poreclă</dt>
+            <dd>
+              @if (guest.nickname) {
+                {{ guest.nickname }}
+              } @else {
+                <span class="muted">—</span>
+              }
+            </dd>
+          </div>
+
+          <div class="detail">
+            <dt>Relație</dt>
+            <dd>
+              @if (guest.relationship) {
+                {{ guest.relationship }}
+              } @else {
+                <span class="muted">—</span>
+              }
+            </dd>
+          </div>
+
+          <div class="detail">
+            <dt>Cum vorbim</dt>
+            <dd class="long-text">
+              @if (guest.speakingStyle) {
+                {{ guest.speakingStyle }}
+              } @else {
+                <span class="muted">—</span>
+              }
+            </dd>
+          </div>
+        </dl>
+
+        <mat-divider></mat-divider>
+
+        <section class="list-block">
+          <h2>Amintiri</h2>
+          @if (guest.memories.length > 0) {
+            <ol>
+              @for (memory of guest.memories; track $index) {
+                <li>{{ memory }}</li>
+              }
+            </ol>
+          } @else {
+            <p class="muted">Nicio amintire salvată.</p>
+          }
+        </section>
+
+        <mat-divider></mat-divider>
+
+        <section class="list-block">
+          <h2>Personalitate</h2>
+          @if (guest.personality.length > 0) {
+            <mat-chip-set>
+              @for (trait of guest.personality; track $index) {
+                <mat-chip>{{ trait }}</mat-chip>
+              }
+            </mat-chip-set>
+          } @else {
+            <p class="muted">Nicio trăsătură salvată.</p>
+          }
+        </section>
       }
     </mat-card-content>
   </mat-card>

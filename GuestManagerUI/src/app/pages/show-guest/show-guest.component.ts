@@ -42,18 +42,6 @@ export class ShowGuestComponent implements OnInit {
     'actions',
   ];
 
-  previewList(values: string[] | undefined, limit = 2): string[] {
-    return (values ?? []).slice(0, limit);
-  }
-
-  extraCount(values: string[] | undefined, limit = 2): number {
-    return Math.max(0, (values?.length ?? 0) - limit);
-  }
-
-  listTooltip(values: string[] | undefined): string {
-    return (values ?? []).join(', ');
-  }
-
   ngOnInit(): void {
     this.loadGuests();
   }
