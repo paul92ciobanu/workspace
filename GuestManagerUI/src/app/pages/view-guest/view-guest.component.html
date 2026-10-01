@@ -1,0 +1,34 @@
+<div class="page">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>View Guest</mat-card-title>
+      <mat-card-subtitle>
+        @if (guestName) {
+          JSON details for {{ guestName }}.
+        } @else {
+          Guest details as JSON.
+        }
+      </mat-card-subtitle>
+      <span class="header-spacer"></span>
+      <a mat-button routerLink="/guests">
+        <mat-icon>arrow_back</mat-icon>
+        Back to guests
+      </a>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (loading) {
+        <div class="state">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else if (errorMessage) {
+        <div class="state error">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      } @else {
+        <pre class="json">{{ guestJson }}</pre>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

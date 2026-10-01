@@ -1,0 +1,117 @@
+<div class="page">
+  <mat-card appearance="outlined" class="form-card">
+    @if (submitting) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <mat-card-header>
+      <mat-card-title>Add Guest</mat-card-title>
+      <mat-card-subtitle>Create a guest profile with memories and personality traits.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form class="guest-form" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name" placeholder="Andrei" />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <mat-error>Name is required.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Poreclă</mat-label>
+          <input matInput type="text" formControlName="nickname" placeholder="Dinte, nașule" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Relație</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="relationship"
+            placeholder="prieten din liceu, văr, coleg de job"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cum vorbim</mat-label>
+          <textarea
+            matInput
+            rows="3"
+            formControlName="speakingStyle"
+            placeholder="ironie, tu, glume; evităm politica"
+          ></textarea>
+        </mat-form-field>
+
+        <section class="list-section">
+          <div class="section-header">
+            <h2>Memories</h2>
+            <button mat-stroked-button type="button" color="primary" (click)="addMemory()">
+              <mat-icon>add</mat-icon>
+              Add memory
+            </button>
+          </div>
+
+          <div formArrayName="memories" class="list-items">
+            @for (control of memories.controls; track $index) {
+              <div class="list-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Memory {{ $index + 1 }}</mat-label>
+                  <input matInput type="text" [formControlName]="$index" placeholder="A shared memory..." />
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  type="button"
+                  color="warn"
+                  (click)="removeMemory($index)"
+                  [disabled]="memories.length === 1"
+                  aria-label="Remove memory"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="list-section">
+          <div class="section-header">
+            <h2>Personality</h2>
+            <button mat-stroked-button type="button" color="primary" (click)="addPersonality()">
+              <mat-icon>add</mat-icon>
+              Add trait
+            </button>
+          </div>
+
+          <div formArrayName="personality" class="list-items">
+            @for (control of personality.controls; track $index) {
+              <div class="list-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Trait {{ $index + 1 }}</mat-label>
+                  <input matInput type="text" [formControlName]="$index" placeholder="A personality trait..." />
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  type="button"
+                  color="warn"
+                  (click)="removePersonality($index)"
+                  [disabled]="personality.length === 1"
+                  aria-label="Remove trait"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="submitting">
+            <mat-icon>save</mat-icon>
+            {{ submitting ? 'Saving...' : 'Save guest' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
